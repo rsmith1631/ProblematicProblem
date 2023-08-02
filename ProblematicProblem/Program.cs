@@ -14,19 +14,19 @@ namespace ProblematicProblem
         {
             Random rng = new Random();
             Console.Write("Hello, welcome to the random activity generator! \nWould you like to generate a random activity? yes/no: ");
-            bool cont;
+            bool cont = true;
             var contResponse = Console.ReadLine().ToLower();
-            
-           
-                if (contResponse == "yes")
-                {
-                    cont = true;
-                }
-                else
-                {
-                    cont = false;
-                }
-                Console.WriteLine();
+
+
+            if (contResponse.ToLower() != "yes")
+            {
+                Console.WriteLine("GoodBye!");
+                return;
+            }
+
+            Console.WriteLine();
+
+            Console.WriteLine();
                 Console.Write("We are going to need your information first! What is your name? ");
                 string userName = Console.ReadLine();
                 Console.WriteLine();
@@ -62,37 +62,63 @@ namespace ProblematicProblem
                     }
                 }
 
-                while (cont)
+            do
+            {
+                //Random activity generation starts here
+                Console.Write("Connecting to the database");
+
+                for (int i = 0; i < 10; i++)
                 {
-                    Console.Write("Connecting to the database");
-                    for (int i = 0; i < 10; i++)
-                    {
-                        Console.Write(". ");
-                        Thread.Sleep(500);
-                    }
-                    Console.WriteLine();
-                    Console.Write("Choosing your random activity");
-                    for (int i = 0; i < 9; i++)
-                    {
-                        Console.Write(". ");
-                        Thread.Sleep(500);
-                    }
-                    Console.WriteLine();
-                    int randomNumber = rng.Next(activities.Count);
-                    string randomActivity = activities[randomNumber];
-                    if (userAge < 21 && randomActivity == "Wine Tasting")
-                    {
-                        Console.WriteLine($"Oh no! Looks like you are too young to do {randomActivity}");
-                        Console.WriteLine("Pick something else!");
-                        activities.Remove(randomActivity);
-                        randomNumber = rng.Next(activities.Count);
-                        randomActivity = activities[randomNumber];
-                    }
-                    Console.Write($"Ah got it! {userName}, your random activity is: {randomActivity}! Is this ok or do you want to grab another activity? Keep/Redo: ");
-                    Console.WriteLine();
-                    cont = (Console.ReadLine().ToLower() == "redo") ? true : false;
+                    Console.Write(". ");
+                    Thread.Sleep(500);
                 }
-            
+
+                Console.WriteLine();
+
+                Console.Write("Choosing your random activity");
+
+                for (int i = 0; i < 9; i++)
+                {
+                    Console.Write(". ");
+                    Thread.Sleep(500);
+                }
+
+                Console.WriteLine();
+
+                //Storing a random number
+                //rng.Next can take one param that will be 1 less than the specified number passed in
+                int randomNumber = rng.Next(activities.Count);
+
+                //Choosing a string from the list based on the random index                
+                //This will be overridden every iteration
+                string randomActivity = activities[randomNumber];
+
+                //If wine tasting was chosen and they aren't of age, it will choose again
+                if (userAge > 21 && randomActivity == "Wine Tasting")
+                {
+                    Console.WriteLine($"Oh no! Looks like you are too young to do {randomActivity}");
+                    Console.WriteLine("Pick something else!");
+
+                    //The activity is removed so it will not be selected again
+                    activities.Remove(randomActivity);
+
+                    randomNumber = rng.Next(activities.Count);
+
+                    randomActivity = activities[randomNumber];
+                }
+
+                //Print the activity and ask if it is acceptable if not acceptable we loop again.
+                Console.Write($"Ah got it! {userName}, your random activity is: {randomActivity}! Is this ok or do you want to grab another activity? Keep/Redo: ");
+                contResponse = Console.ReadLine();
+                if (contResponse.ToLower() != "redo")
+                {
+                    cont = false;
+                }
+
+            } while (cont);
+
         }
+
     }
+    
 }
