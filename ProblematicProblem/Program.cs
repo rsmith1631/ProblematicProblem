@@ -94,7 +94,7 @@ namespace ProblematicProblem
                 string randomActivity = activities[randomNumber];
 
                 //If wine tasting was chosen and they aren't of age, it will choose again
-                if (userAge > 21 && randomActivity == "Wine Tasting")
+                if (userAge < 21 && randomActivity == "Wine Tasting")
                 {
                     Console.WriteLine($"Oh no! Looks like you are too young to do {randomActivity}");
                     Console.WriteLine("Pick something else!");
